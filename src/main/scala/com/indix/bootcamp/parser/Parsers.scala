@@ -46,9 +46,8 @@ class JabongParser extends Parser {
   }
 
   override def parsePrice(document: Document): Price = {
-    val listPrice = document.select("span[class=striked-price]").text().replace("Rs. ","").toDouble
+    val listPrice = document.select("span[class=striked-price fs14 c222 d-inline mt5]").text().replace("Rs. ","").toDouble
     val salePrice = document.select("span[itemprop=price]").text().toDouble
-    println(listPrice)
     Price(listPrice, salePrice)
   }
 }
