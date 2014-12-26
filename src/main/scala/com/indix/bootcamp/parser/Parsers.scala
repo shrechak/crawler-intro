@@ -6,14 +6,14 @@ import org.jsoup.nodes.Document
 class FlipkartParser extends Parser {
   override def parseProduct(document: Document, pageUrl: String): Product = {
     val title = document.select("h1[itemprop=name]").text()
-    val description = document.select("#specifications").text()
+    val description = document.select("div[class=productSpecs specSection]").text()
     Product(title, description, pageUrl)
   }
 
   // TODO: Fix the price Extraction
   override def parsePrice(document: Document): Price = {
-    val listPrice = document.select(".old-price").text().toDouble
-    val salePrice = document.select("itemprop[name=price]").attr("content").toDouble
+    val listPrice = document.select("span[class=price]").text().replace(",","").replace("Rs. ","").toDouble
+    val salePrice = document.select("span[class=selling-price omniture-field]").attr("data-evar48").toDouble
     Price(listPrice, salePrice)
   }
 }
