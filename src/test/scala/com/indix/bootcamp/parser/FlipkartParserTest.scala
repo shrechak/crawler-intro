@@ -21,3 +21,6 @@ class FlipkartParserTest extends FunSuite with Matchers with TestUtils {
     parsedPrice.salePrice should be(5555.0)
   }
 }
+
+
+

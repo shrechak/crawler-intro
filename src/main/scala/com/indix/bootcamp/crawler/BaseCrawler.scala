@@ -3,13 +3,13 @@ package com.indix.bootcamp.crawler
 import edu.uci.ics.crawler4j.crawler.{Page, WebCrawler}
 import edu.uci.ics.crawler4j.parser.HtmlParseData
 import com.indix.bootcamp.parser.{Parser, FlipkartParser}
-import java.io.{PrintWriter, File}
+import java.io.{FileWriter, PrintWriter, File}
 import scala.util.Random
 import edu.uci.ics.crawler4j.url.WebURL
 
 abstract class BaseCrawler extends WebCrawler {
   val parser: Parser
-  val writer = new PrintWriter(new File("/tmp/crawler4j-scala/results-" + Random.nextInt(Int.MaxValue) + ".csv"))
+  val writer = new FileWriter("/tmp/crawler4j-scala/results-" + Random.nextInt(Int.MaxValue) + ".csv",true)
 
   /*
     TODO: By default the crawler extracts urls from all the tags like link, script, embed, img, a etc.
@@ -32,9 +32,14 @@ abstract class BaseCrawler extends WebCrawler {
     page.getParseData match {
       case data: HtmlParseData =>
         val result = parser.parse(data.getHtml, page.getWebURL.getURL)
-        println(s"Parsed successfully as ${result}")
-        writer.append(result.toCsv)
-        writer.append("\n")
+
+          println(s"Parsed successfully as ${result}")
+          if(result.isValidProductPage) {
+            writer.append(result.toCsv)
+            writer.append("\n")
+            writer.flush()
+          }
+
     }
   }
 

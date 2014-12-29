@@ -1,0 +1,1 @@
+/**/twttr.receiveCount({"count":0,"url":"http:\/\/www.snapdeal.com\/product\/karbonn-titanium-s3-black\/199999435\/"});
