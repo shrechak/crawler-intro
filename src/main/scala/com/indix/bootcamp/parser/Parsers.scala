@@ -2,6 +2,7 @@ package com.indix.bootcamp.parser
 
 import com.indix.bootcamp.models.{Product, Price, Result}
 import org.jsoup.nodes.Document
+import com.indix.bootcamp.utils.Utils.Managed
 
 /*************************FLIPKART***********************************/
 class FlipkartParser extends Parser {
@@ -13,9 +14,9 @@ class FlipkartParser extends Parser {
 
   // TODO: Fix the price Extraction
   override def parsePrice(document: Document): Price = {
-    val listPrice = document.select("span[class=price]").text().replace(",","").replace("Rs. ","").toDouble
-    val salePrice = document.select("span[class=selling-price omniture-field]").attr("data-evar48").toDouble
-    Price(listPrice, salePrice)
+    val listPrice = Managed(document.select("span[class=price]").text().replace(",","").replace("Rs. ","").toDouble)
+    val salePrice = Managed(document.select("span[class=selling-price omniture-field]").attr("data-evar48").toDouble)
+    Price(listPrice.getOrElse(-1), salePrice.getOrElse(-1))
   }
 }
 
@@ -30,9 +31,9 @@ class SnapdealParser extends Parser {
 
   // TODO: Fix the price Extraction
   override def parsePrice(document: Document): Price = {
-    val listPrice = document.select("span[id=original-price-id]").text().toDouble
-    val salePrice = document.select("span[id=selling-price-id]").text().toDouble
-    Price(listPrice, salePrice)
+    val listPrice = Managed(document.select("span[id=original-price-id]").text().toDouble)
+    val salePrice = Managed(document.select("span[id=selling-price-id]").text().toDouble)
+    Price(listPrice.getOrElse(-1), salePrice.getOrElse(-1))
   }
 }
 
@@ -46,8 +47,8 @@ class JabongParser extends Parser {
   }
 
   override def parsePrice(document: Document): Price = {
-    val listPrice = document.select("span[class=striked-price fs14 c222 d-inline mt5]").text().replace("Rs. ","").toDouble
-    val salePrice = document.select("span[itemprop=price]").text().toDouble
-    Price(listPrice, salePrice)
+    val listPrice = Managed(document.select("span[class=striked-price fs14 c222 d-inline mt5]").text().replace("Rs. ","").toDouble)
+    val salePrice = Managed(document.select("span[itemprop=price]").text().toDouble)
+    Price(listPrice.getOrElse(-1), salePrice.getOrElse(-1))
   }
 }

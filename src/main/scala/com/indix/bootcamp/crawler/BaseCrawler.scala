@@ -1,11 +1,13 @@
 package com.indix.bootcamp.crawler
 
+import java.io.FileWriter
+
+import com.indix.bootcamp.parser.{FlipkartParser, Parser}
 import edu.uci.ics.crawler4j.crawler.{Page, WebCrawler}
 import edu.uci.ics.crawler4j.parser.HtmlParseData
-import com.indix.bootcamp.parser.{Parser, FlipkartParser}
-import java.io.{FileWriter, PrintWriter, File}
-import scala.util.Random
 import edu.uci.ics.crawler4j.url.WebURL
+
+import scala.util.Random
 
 abstract class BaseCrawler extends WebCrawler {
   val parser: Parser
@@ -28,18 +30,19 @@ abstract class BaseCrawler extends WebCrawler {
   }
 
   override def visit(page: Page) {
-    println(s"Fetched ${page.getWebURL.getURL} from ${page.getWebURL.getAnchor}")
+    val urlToVisit= page.getWebURL.getURL
+    println(s"Fetched "+urlToVisit+" from "+page.getWebURL.getAnchor)
     page.getParseData match {
       case data: HtmlParseData =>
-        val result = parser.parse(data.getHtml, page.getWebURL.getURL)
-
+        //if (urlToVisit.contains("/p/")) {
+          val result = parser.parse(data.getHtml, page.getWebURL.getURL)
           println(s"Parsed successfully as ${result}")
-          if(result.isValidProductPage) {
+          if (result.isValidProductPage) {
             writer.append(result.toCsv)
             writer.append("\n")
             writer.flush()
           }
-
+        //}
     }
   }
 

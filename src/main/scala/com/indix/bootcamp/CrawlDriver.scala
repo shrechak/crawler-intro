@@ -20,6 +20,7 @@ object CrawlDriver extends App {
   config.setResumableCrawling(true)
   config.setProxyHost("proxy.production.indix.tv")
   config.setProxyPort(8080)// Enable as required
+  config.setUserAgentString("Mozilla/5.0 (Windows; U; Windows NT 6.1; rv:2.2) Gecko/20110201")
   // TODO: Add proxy support for your crawler to not get blocked.
   /*
     How Proxy works
